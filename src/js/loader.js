@@ -3,8 +3,16 @@ const ROWS = 25;
 const COLUMNS = 50;
 const BOUNDS = { row: ROWS, column: COLUMNS };
 
+// init for mobile
+const { clientWidth } = document.body;
+const MOBILE = clientWidth <= 500;
+if (MOBILE) {
+  console.log("Mobile!");
+}
+
 // calculate unit
-const UNIT = 10;
+const UNIT = MOBILE ? Math.floor(clientWidth / COLUMNS) : 10;
+console.log(clientWidth, UNIT);
 
 // load canvas
 const CANVAS = document.querySelector("canvas");

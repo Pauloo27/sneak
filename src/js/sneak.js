@@ -19,15 +19,21 @@ class Sneak {
   constructor(position, size) {
     this.position = position;
     this.direction = WEST;
-    this.tail = xTimes(size - 1).map((i) => {
-      const tailPos = new Position(position.row, position.column);
-      tailPos[this.direction.axis] -= (i + 1) * this.direction.modifier;
-      return new SneakTail(this, tailPos);
-    });
+    this.tail = [];
+    xTimes(size - 1).forEach(() => this.increaseSize());
   }
 
   get size() {
     return this.tail.length + 1;
+  }
+
+  increaseSize() {
+    const len = this.tail.length;
+    const { position } = len == 0 ? this : this.tail[len - 1];
+
+    const pos = new Position(position.row, position.column);
+    pos[this.direction.axis] -= this.direction.modifier;
+    this.tail.push(new SneakTail(this, pos));
   }
 
   step() {

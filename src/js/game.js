@@ -24,18 +24,19 @@ function placeFood() {
 function updateGame() {
   if (STATE.lastUpdate === undefined) return;
 
+  STATE.foods.forEach((food) => {
+    if (food.equalsTo(STATE.sneak.position)) {
+      STATE.sneak.increaseSize();
+      STATE.foods = STATE.foods.filter((f) => !f.equalsTo(food));
+    }
+  });
+
   if (STATE.moveQueue.length !== 0) {
     STATE.sneak.direction = STATE.moveQueue[0];
     STATE.moveQueue = STATE.moveQueue.slice(1);
   }
 
   STATE.sneak.step();
-
-  STATE.foods.forEach((food) => {
-    if (food.equalsTo(STATE.sneak.position)) {
-      STATE.foods = STATE.foods.filter((f) => !f.equalsTo(food));
-    }
-  });
 
   if (STATE.foods.length === 0) placeFood();
 }

@@ -21,13 +21,24 @@ class Sneak {
     this.direction = EAST;
     this.tail = xTimes(size - 1).map((i) => {
       const tailPos = new Position(position.row, position.column);
-      tailPos[this.direction.axis] += (i + 1) * -this.direction.modifier;
+      tailPos[this.direction.axis] -= (i + 1) * this.direction.modifier;
       return new SneakTail(this, tailPos);
     });
   }
 
   get size() {
     return this.tail.length + 1;
+  }
+
+  step() {
+    for (let i = this.tail.length - 1; i >= 0; i--) {
+      if (i === 0) {
+        this.tail[i].position.copy(this.position);
+      } else {
+        this.tail[i].position.copy(this.tail[i - 1].position);
+      }
+    }
+    this.direction.apply(this.position);
   }
 }
 

@@ -3,12 +3,24 @@ const STATE = {
   sneak: undefined,
   updateQueue: [],
   lastUpdate: undefined,
+  unitsPerSecond: 3,
+  lastStep: undefined,
 };
 
-function updateGame() {
+function updateGame(now) {
   if (STATE.lastUpdate === undefined) return true;
 
-  return false;
+  let updated = false;
+
+  if (
+    STATE.lastStep === undefined ||
+    now - STATE.lastStep >= 1000 / STATE.unitsPerSecond
+  ) {
+    STATE.sneak.step();
+    STATE.lastStep = now;
+    updated = true;
+  }
+  return updated;
 }
 
 function draw(color, row, column, rowOffset, columnOffset) {
@@ -41,7 +53,7 @@ async function gameLoop() {
     STATE.lastUpdate === undefined ||
     now - STATE.lastUpdate >= 1000 / UPDATES_PER_SECOND
   ) {
-    if (updateGame()) render();
+    if (updateGame(now)) render();
     STATE.lastUpdate = now;
   }
   window.requestAnimationFrame(gameLoop);

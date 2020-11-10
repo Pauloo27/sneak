@@ -3,6 +3,11 @@ class Position {
     this.row = row;
     this.column = column;
   }
+
+  copy(position) {
+    this.row = position.row;
+    this.column = position.column;
+  }
 }
 
 function xTimes(x) {

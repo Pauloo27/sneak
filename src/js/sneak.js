@@ -18,7 +18,7 @@ const WEST = new Direction("column", -1);
 class Sneak {
   constructor(position, size) {
     this.position = position;
-    this.direction = EAST;
+    this.direction = WEST;
     this.tail = xTimes(size - 1).map((i) => {
       const tailPos = new Position(position.row, position.column);
       tailPos[this.direction.axis] -= (i + 1) * this.direction.modifier;
@@ -39,6 +39,13 @@ class Sneak {
       }
     }
     this.direction.apply(this.position);
+    // check if it's outside the canvas
+    if (this.position[this.direction.axis] < 0) {
+      this.position[this.direction.axis] = BOUNDS[this.direction.axis] - 1;
+    }
+    if (this.position[this.direction.axis] >= BOUNDS[this.direction.axis]) {
+      this.position[this.direction.axis] = 0;
+    }
   }
 }
 

@@ -2,6 +2,7 @@
 const ROWS = 25;
 const COLUMNS = 50;
 const UPDATES_PER_SECOND = 30;
+const BOUNDS = { row: ROWS, column: COLUMNS };
 
 // calculate unit
 const UNIT = 10;

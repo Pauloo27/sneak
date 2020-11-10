@@ -3,8 +3,9 @@ const STATE = {
   sneak: undefined,
   updateQueue: [],
   lastUpdate: undefined,
-  unitsPerSecond: 3,
   lastStep: undefined,
+  updatesPerSecond: 10,
+  moveQueue: [],
 };
 
 function updateGame(now) {
@@ -12,15 +13,15 @@ function updateGame(now) {
 
   let updated = false;
 
-  if (
-    STATE.lastStep === undefined ||
-    now - STATE.lastStep >= 1000 / STATE.unitsPerSecond
-  ) {
-    STATE.sneak.step();
-    STATE.lastStep = now;
-    updated = true;
+  if (STATE.moveQueue.length !== 0) {
+    STATE.sneak.direction = STATE.moveQueue[0];
+    STATE.moveQueue = STATE.moveQueue.slice(1);
   }
-  return updated;
+
+  STATE.sneak.step();
+  STATE.lastStep = now;
+
+  return true;
 }
 
 function draw(color, row, column, rowOffset, columnOffset) {
@@ -51,7 +52,7 @@ async function gameLoop() {
   const now = new Date().getTime();
   if (
     STATE.lastUpdate === undefined ||
-    now - STATE.lastUpdate >= 1000 / UPDATES_PER_SECOND
+    now - STATE.lastUpdate >= 1000 / STATE.updatesPerSecond
   ) {
     if (updateGame(now)) render();
     STATE.lastUpdate = now;

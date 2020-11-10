@@ -3,15 +3,26 @@ const STATE = {
   sneak: undefined,
   updateQueue: [],
   lastUpdate: undefined,
-  lastStep: undefined,
   updatesPerSecond: 10,
   moveQueue: [],
+  foods: [],
 };
 
-function updateGame(now) {
-  if (STATE.lastUpdate === undefined) return true;
+function placeFood() {
+  let pos = new Position(0, 0);
+  do {
+    pos.row = Math.floor(Math.random() * ROWS);
+    pos.column = Math.floor(Math.random() * COLUMNS);
+  } while (
+    pos.equalsTo(STATE.sneak.position) ||
+    STATE.sneak.tail.some((t) => pos.equalsTo(t.position))
+  );
 
-  let updated = false;
+  STATE.foods.push(pos);
+}
+
+function updateGame(now) {
+  if (STATE.lastUpdate === undefined) return;
 
   if (STATE.moveQueue.length !== 0) {
     STATE.sneak.direction = STATE.moveQueue[0];
@@ -19,9 +30,14 @@ function updateGame(now) {
   }
 
   STATE.sneak.step();
-  STATE.lastStep = now;
 
-  return true;
+  STATE.foods.forEach((food) => {
+    if (food.equalsTo(STATE.sneak.position)) {
+      STATE.foods = STATE.foods.filter((f) => !f.equalsTo(food));
+    }
+  });
+
+  if (STATE.foods.length === 0) placeFood();
 }
 
 function draw(color, row, column, rowOffset, columnOffset) {
@@ -39,13 +55,15 @@ function render() {
   // set background (required to erase previous render)
   draw("#212121", 0, 0, ROWS, COLUMNS);
 
-  /* draw sneak */
-  // head
+  // draw sneak head
   draw("#ffff00", STATE.sneak.position.row, STATE.sneak.position.column, 1, 1);
-  // tail
-  STATE.sneak.tail.forEach((tail) => {
-    draw("#eee", tail.position.row, tail.position.column, 1, 1);
-  });
+  // drawk sneak tail
+  STATE.sneak.tail.forEach((tail) =>
+    draw("#eee", tail.position.row, tail.position.column, 1, 1)
+  );
+
+  // draw food
+  STATE.foods.forEach((food) => draw("#ff0000", food.row, food.column, 1, 1));
 }
 
 async function gameLoop() {
@@ -54,7 +72,8 @@ async function gameLoop() {
     STATE.lastUpdate === undefined ||
     now - STATE.lastUpdate >= 1000 / STATE.updatesPerSecond
   ) {
-    if (updateGame(now)) render();
+    updateGame();
+    render();
     STATE.lastUpdate = now;
   }
   window.requestAnimationFrame(gameLoop);

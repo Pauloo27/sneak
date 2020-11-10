@@ -8,6 +8,10 @@ class Position {
     this.row = position.row;
     this.column = position.column;
   }
+
+  equalsTo(position) {
+    return position.row === this.row && position.column === this.column;
+  }
 }
 
 function xTimes(x) {

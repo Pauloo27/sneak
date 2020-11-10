@@ -1,6 +1,6 @@
 // grid size
-const ROWS = 25;
-const COLUMNS = 50;
+const ROWS = 20;
+const COLUMNS = 40;
 const BOUNDS = { row: ROWS, column: COLUMNS };
 
 // init for mobile

@@ -21,7 +21,7 @@ function placeFood() {
   STATE.foods.push(pos);
 }
 
-function updateGame(now) {
+function updateGame() {
   if (STATE.lastUpdate === undefined) return;
 
   if (STATE.moveQueue.length !== 0) {
@@ -55,12 +55,13 @@ function render() {
   // set background (required to erase previous render)
   draw("#212121", 0, 0, ROWS, COLUMNS);
 
-  // draw sneak head
-  draw("#ffff00", STATE.sneak.position.row, STATE.sneak.position.column, 1, 1);
   // drawk sneak tail
   STATE.sneak.tail.forEach((tail) =>
     draw("#eee", tail.position.row, tail.position.column, 1, 1)
   );
+
+  // draw sneak head
+  draw("#ffff00", STATE.sneak.position.row, STATE.sneak.position.column, 1, 1);
 
   // draw food
   STATE.foods.forEach((food) => draw("#ff0000", food.row, food.column, 1, 1));

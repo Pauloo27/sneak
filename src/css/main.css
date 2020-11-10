@@ -10,3 +10,25 @@ canvas {
 #main-container {
   text-align: center;
 }
+
+.btn {
+  font-size: 2em;
+  
+  background-color: transparent;
+  border: solid 2px #eee;
+  color: #eee;
+  border-radius: 5px;
+  padding: 5px 10px;
+
+  margin: 10px;
+
+  width: 30%;
+
+  cursor: pointer;
+}
+
+.btn-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

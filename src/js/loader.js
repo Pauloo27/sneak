@@ -8,6 +8,21 @@ const { clientWidth } = document.body;
 const MOBILE = clientWidth <= 500;
 if (MOBILE) {
   console.log("Mobile!");
+  // create controllers
+  const controllers = document.querySelector("#mobile-controller");
+  const addBtn = (text, direction, block) => {
+    const btn = document.createElement("button");
+    btn.innerText = text;
+    btn.addEventListener("click", () => changeDirectionTo(direction));
+    btn.classList = `btn ${block === true ? "btn-block" : ""}`;
+
+    controllers.appendChild(btn);
+  };
+
+  addBtn("Up", NORTH, true);
+  addBtn("Left", WEST);
+  addBtn("Right", EAST);
+  addBtn("Down", SOUTH, true);
 }
 
 // calculate unit

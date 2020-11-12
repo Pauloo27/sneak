@@ -24,6 +24,14 @@ function placeFood() {
 function updateGame() {
   if (STATE.lastUpdate === undefined) return;
 
+  const sneakPosition = STATE.sneak.position;
+
+  if (STATE.sneak.tail.some((tail) => tail.position.equalsTo(sneakPosition))) {
+    STATE.inGame = false;
+    setStatus(`You died! Score: ${getScore()}`);
+    return;
+  }
+
   STATE.foods.forEach((food) => {
     if (food.equalsTo(STATE.sneak.position)) {
       STATE.sneak.increaseSize();
@@ -80,10 +88,10 @@ async function gameLoop() {
   ) {
     updateGame();
     render();
-    setStatus(`Score: ${getScore()}`);
+    if (STATE.inGame) setStatus(`Score: ${getScore()}`);
     STATE.lastUpdate = now;
   }
-  window.requestAnimationFrame(gameLoop);
+  if (STATE.inGame) window.requestAnimationFrame(gameLoop);
 }
 
 function startGame() {

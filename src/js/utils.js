@@ -23,3 +23,7 @@ function changeDirectionTo(direction) {
     STATE.moveQueue.push(direction);
   }
 }
+
+function setStatus(message) {
+  STATUS_HOLDER.innerText = message;
+}

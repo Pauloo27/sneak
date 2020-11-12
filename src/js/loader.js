@@ -2,6 +2,8 @@
 const ROWS = 20;
 const COLUMNS = 40;
 const BOUNDS = { row: ROWS, column: COLUMNS };
+const STATUS_HOLDER = document.querySelector("#game-status");
+const INITIAL_SIZE = 3;
 
 // init for mobile
 const { clientWidth } = document.body;

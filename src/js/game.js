@@ -68,6 +68,10 @@ function render() {
   STATE.foods.forEach((food) => draw("#ff0000", food.row, food.column, 1, 1));
 }
 
+function getScore() {
+  return STATE.sneak.size - INITIAL_SIZE;
+}
+
 async function gameLoop() {
   const now = new Date().getTime();
   if (
@@ -76,6 +80,7 @@ async function gameLoop() {
   ) {
     updateGame();
     render();
+    setStatus(`Score: ${getScore()}`);
     STATE.lastUpdate = now;
   }
   window.requestAnimationFrame(gameLoop);
@@ -83,7 +88,7 @@ async function gameLoop() {
 
 function startGame() {
   STATE.inGame = true;
-  STATE.sneak = new Sneak(new Position(5, 10), 3);
+  STATE.sneak = new Sneak(new Position(5, 10), INITIAL_SIZE);
 
   // start game loop
   window.requestAnimationFrame(gameLoop);

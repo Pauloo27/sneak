@@ -7,7 +7,6 @@ const BOUNDS = { row: ROWS, column: COLUMNS };
 const { clientWidth } = document.body;
 const MOBILE = clientWidth <= 500;
 if (MOBILE) {
-  console.log("Mobile!");
   // create controllers
   const controllers = document.querySelector("#mobile-controller");
   const addBtn = (text, direction, block) => {

@@ -1,0 +1,45 @@
+body {
+  background-color: #1a1a1a;
+  color: #eee;
+}
+
+canvas {
+  background-color: #212121;
+}
+
+#main-container {
+  text-align: center;
+}
+
+.btn {
+  font-size: 2em;
+
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+
+  background-color: transparent;
+  border: solid 2px #eee;
+  color: #eee;
+  border-radius: 5px;
+
+  margin: 10px;
+
+  width: 30%;
+
+  cursor: pointer;
+}
+
+.btn-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#start-btn {
+  background-color: transparent;
+  font-size: 1em;
+  color: #eee;
+  padding: 5px 10px;
+  border: solid 2px #eee;
+}

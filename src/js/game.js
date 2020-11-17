@@ -1,13 +1,7 @@
-const STATE = {
-  inGame: false,
-  lives: 3,
-  sneak: undefined,
-  updateQueue: [],
-  lastUpdate: undefined,
-  updatesPerSecond: 10,
-  moveQueue: [],
-  foods: [],
+const DEFAULT_STATE = {
 };
+
+let STATE;
 
 function placeFood() {
   let pos = new Position(0, 0);
@@ -99,8 +93,16 @@ async function gameLoop() {
 }
 
 function startGame() {
-  STATE.inGame = true;
-  STATE.sneak = new Sneak(new Position(5, 10), INITIAL_SIZE);
+  STATE = {
+    inGame: true,
+    lives: 3,
+    updateQueue: [],
+    sneak: new Sneak(new Position(5, 10), INITIAL_SIZE),
+    lastUpdate: undefined,
+    updatesPerSecond: 10,
+    moveQueue: [],
+    foods: [],
+  }
 
   // start game loop
   window.requestAnimationFrame(gameLoop);

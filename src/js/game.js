@@ -1,5 +1,6 @@
 const STATE = {
   inGame: false,
+  lives: 3,
   sneak: undefined,
   updateQueue: [],
   lastUpdate: undefined,
@@ -27,9 +28,12 @@ function updateGame() {
   const sneakPosition = STATE.sneak.position;
 
   if (STATE.sneak.tail.some((tail) => tail.position.equalsTo(sneakPosition))) {
-    STATE.inGame = false;
-    setStatus(`You died! Score: ${getScore()}`);
-    return;
+    STATE.lives--;
+    if (STATE.lives < 0) {
+      STATE.inGame = false;
+      setStatus(`You died! Score: ${getScore()}`);
+      return;
+    }
   }
 
   STATE.foods.forEach((food) => {
@@ -88,7 +92,7 @@ async function gameLoop() {
   ) {
     updateGame();
     render();
-    if (STATE.inGame) setStatus(`Score: ${getScore()}`);
+    if (STATE.inGame) setStatus(`Score: ${getScore()} | Lives: ${STATE.lives}`);
     STATE.lastUpdate = now;
   }
   if (STATE.inGame) window.requestAnimationFrame(gameLoop);

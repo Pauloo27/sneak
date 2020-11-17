@@ -7,7 +7,7 @@ A simple sneak game made with HTML Canvas and JavaScript.
 </p>
 
 ## How to play
-You can use [the one hosted in GitHub pages](https://pauloo27.github.io/sneak).
+You can use [the one hosted in GitHub pages](https://pauloo27.github.io/snek).
 
 You can also run locally, just clone the repository and open the 
 `src/index.html` file (no need to build or install anything).

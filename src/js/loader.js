@@ -38,6 +38,7 @@ CANVAS.height = UNIT * ROWS;
 const CONTEXT = CANVAS.getContext("2d");
 
 registerKeyBinds();
-document.querySelector("#start-btn").addEventListener("click", () => {
+document.querySelector("#start-btn").addEventListener("click", (e) => {
+  e.target.innerText = "Restart";
   startGame();
 });

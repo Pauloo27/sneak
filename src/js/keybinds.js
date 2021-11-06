@@ -3,6 +3,10 @@ const binds = {
   ArrowDown: () => changeDirectionTo(SOUTH),
   ArrowLeft: () => changeDirectionTo(WEST),
   ArrowRight: () => changeDirectionTo(EAST),
+  w: () => changeDirectionTo(NORTH),
+  s: () => changeDirectionTo(SOUTH),
+  a: () => changeDirectionTo(WEST),
+  d: () => changeDirectionTo(EAST),
 };
 
 function registerKeyBinds() {

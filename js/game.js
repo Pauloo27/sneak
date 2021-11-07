@@ -1,6 +1,3 @@
-const DEFAULT_STATE = {
-};
-
 let STATE;
 
 function placeFood() {
@@ -59,19 +56,24 @@ function draw(color, row, column, rowOffset, columnOffset) {
 
 function render() {
   console.log("render");
-  // set background (required to erase previous render)
-  draw("#212121", 0, 0, ROWS, COLUMNS);
+  const headColor = STATE.skin?.head || "#ffff00";
+  const foodColor = STATE.skin?.food || "#ff0000";
+  const bgColor = STATE.skin?.bg || "#212121";
 
-  // drawk sneak tail
-  STATE.sneak.tail.forEach((tail) =>
-    draw("#eee", tail.position.row, tail.position.column, 1, 1)
-  );
+  // set background (required to erase previous render)
+  draw(bgColor, 0, 0, ROWS, COLUMNS);
+
+  // draw sneak tail
+  STATE.sneak.tail.forEach((tail, index) => {
+    const color = STATE.skin?.tail ? STATE.skin.tail(tail, index) : "#eee";
+    draw(color, tail.position.row, tail.position.column, 1, 1)
+  });
 
   // draw sneak head
-  draw("#ffff00", STATE.sneak.position.row, STATE.sneak.position.column, 1, 1);
+  draw(headColor, STATE.sneak.position.row, STATE.sneak.position.column, 1, 1);
 
   // draw food
-  STATE.foods.forEach((food) => draw("#ff0000", food.row, food.column, 1, 1));
+  STATE.foods.forEach((food) => draw(foodColor, food.row, food.column, 1, 1));
 }
 
 function getScore() {
@@ -102,6 +104,9 @@ function startGame() {
     updatesPerSecond: 10,
     moveQueue: [],
     foods: [],
+    skin: {
+      // TODO:
+    }
   }
 
   // start game loop

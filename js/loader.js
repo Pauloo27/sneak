@@ -27,8 +27,7 @@ if (MOBILE) {
 }
 
 // calculate unit
-const UNIT = MOBILE ? Math.floor(clientWidth / COLUMNS) : 10;
-console.log(clientWidth, UNIT);
+const UNIT = MOBILE ? Math.floor(clientWidth / COLUMNS) : 20;
 
 // load canvas
 const CANVAS = document.querySelector("canvas");

@@ -1,6 +1,6 @@
 let STATE;
 
-function placeFood() {
+function placeAtRandomSpot(arr) {
   let pos = new Position(0, 0);
   do {
     pos.row = Math.floor(Math.random() * ROWS);
@@ -10,7 +10,7 @@ function placeFood() {
     STATE.sneak.tail.some((t) => pos.equalsTo(t.position))
   );
 
-  STATE.foods.push(pos);
+  arr.push(pos);
 }
 
 function updateGame() {
@@ -41,7 +41,7 @@ function updateGame() {
 
   STATE.sneak.step();
 
-  if (STATE.foods.length === 0) placeFood();
+  if (STATE.foods.length === 0) placeAtRandomSpot(STATE.foods);
 }
 
 function draw(color, row, column, rowOffset, columnOffset) {

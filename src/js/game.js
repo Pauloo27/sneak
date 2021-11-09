@@ -56,7 +56,7 @@ function draw(color, row, column, rowOffset, columnOffset) {
 
 function render() {
   console.log("render");
-  const headColor = STATE.skin?.head || "#ffff00";
+  const headColor = STATE.skin?.head || "#2121ff";
   const foodColor = STATE.skin?.food || "#ff0000";
   const bgColor = STATE.skin?.bg || "#212121";
 

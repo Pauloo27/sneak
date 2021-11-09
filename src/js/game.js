@@ -1,4 +1,5 @@
 let STATE;
+let updates = 0;
 
 function placeAtRandomSpot(arr) {
   let pos = new Position(0, 0);
@@ -13,8 +14,16 @@ function placeAtRandomSpot(arr) {
   arr.push(pos);
 }
 
+function findCollision(arr, callback) {
+  arr.forEach((item) => {
+    if (item.equalsTo(STATE.sneak.position)) callback(item);
+  });
+}
+
 function updateGame() {
   if (STATE.lastUpdate === undefined) return;
+
+  updates++;
 
   const sneakPosition = STATE.sneak.position;
 
@@ -27,12 +36,15 @@ function updateGame() {
     }
   }
 
-  STATE.foods.forEach((food) => {
-    if (food.equalsTo(STATE.sneak.position)) {
-      STATE.sneak.increaseSize();
-      STATE.foods = STATE.foods.filter((f) => !f.equalsTo(food));
-    }
-  });
+  findCollision(STATE.foods, (item) => {
+    STATE.sneak.increaseSize();
+    STATE.foods = STATE.foods.filter((f) => !f.equalsTo(item));
+  })
+
+  findCollision(STATE.golds, (item) => {
+    STATE.gold++;
+    STATE.golds = STATE.golds.filter((f) => !f.equalsTo(item));
+  })
 
   if (STATE.moveQueue.length !== 0) {
     STATE.sneak.direction = STATE.moveQueue[0];
@@ -42,6 +54,8 @@ function updateGame() {
   STATE.sneak.step();
 
   if (STATE.foods.length === 0) placeAtRandomSpot(STATE.foods);
+
+  if (STATE.golds.length === 0 && updates % 24 == 0) placeAtRandomSpot(STATE.golds);
 }
 
 function draw(color, row, column, rowOffset, columnOffset) {
@@ -55,9 +69,9 @@ function draw(color, row, column, rowOffset, columnOffset) {
 }
 
 function render() {
-  console.log("render");
   const headColor = STATE.skin?.head || "#2121ff";
   const foodColor = STATE.skin?.food || "#ff0000";
+  const goldColor = STATE.skin?.food || "#ffff00";
   const bgColor = STATE.skin?.bg || "#212121";
 
   // set background (required to erase previous render)
@@ -74,6 +88,7 @@ function render() {
 
   // draw food
   STATE.foods.forEach((food) => draw(foodColor, food.row, food.column, 1, 1));
+  STATE.golds.forEach((gold) => draw(goldColor, gold.row, gold.column, 1, 1));
 }
 
 function getScore() {
@@ -88,7 +103,7 @@ async function gameLoop() {
   ) {
     updateGame();
     render();
-    if (STATE.inGame) setStatus(`Score: ${getScore()} | Lives: ${STATE.lives}`);
+    if (STATE.inGame) setStatus(`Score: ${getScore()} | Lives: ${STATE.lives} | Gold: ${STATE.gold}`);
     STATE.lastUpdate = now;
   }
   if (STATE.inGame) window.requestAnimationFrame(gameLoop);
@@ -104,6 +119,8 @@ function startGame() {
     updatesPerSecond: 10,
     moveQueue: [],
     foods: [],
+    golds: [],
+    gold: 0,
     skin: {
       // TODO:
     }
